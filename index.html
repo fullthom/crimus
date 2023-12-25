@@ -1,60 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sleeps Until Christmas</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            text-align: center;
-            padding-top: 50px;
-        }
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif; /* Festive font */
+        background-color: #fff5ee; /* Soft background color */
+        color: #006400; /* Deep green for text */
+        text-align: center;
+        padding-top: 50px;
+        background-image: url("https://example.com/snowflake-background.png"); /* Add a festive background image */
+      }
+      .counter {
+        background-color: #ff6347; /* Vibrant red background */
+        color: white; /* White text for contrast */
+        display: inline-block;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border: 5px dashed gold; /* Gold border for extra festivity */
+      }
+      .counter h1 {
+        margin: 0;
+        font-size: 2em; /* Larger font size */
+      }
+      @media (max-width: 600px) {
         .counter {
-            background-color: #e0e0e0;
-            display: inline-block;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          padding: 20px;
         }
         .counter h1 {
-            color: #333;
-            margin: 0;
+          font-size: 1.5em;
         }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="counter">
-        <h1 id="sleepsCounter">Loading...</h1>
+      <h1 id="sleepsCounter">Loading...</h1>
     </div>
 
     <script>
-        function calculateSleepsUntilChristmas() {
-            const now = new Date();
-            const currentYear = now.getFullYear();
-            let christmasDate = new Date(currentYear, 11, 25); // December 25
+      function calculateSleepsUntilChristmas() {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        // Create Christmas date in UTC
+        const christmasDate = new Date(Date.UTC(currentYear, 11, 25)); // December 25
 
-            // Adjust for the current timezone
-            const timezoneOffset = now.getTimezoneOffset() * 60000; // offset in milliseconds
-            now.setTime(now.getTime() - timezoneOffset);
-            christmasDate.setTime(christmasDate.getTime() - timezoneOffset);
+        // Strip the time part for comparison
+        const today = new Date(
+          now.getFullYear(),
+          now.getMonth(),
+          now.getDate()
+        );
+        const christmasDay = new Date(
+          christmasDate.getUTCFullYear(),
+          christmasDate.getUTCMonth(),
+          christmasDate.getUTCDate()
+        );
 
-            // Check if we need to move to next year's Christmas
-            if (now.getMonth() === 11 && now.getDate() > 25) {
-                christmasDate.setFullYear(christmasDate.getFullYear() + 1);
-            }
-
-            const wakeUpTime = new Date(now);
-            wakeUpTime.setHours(6, 0, 0, 0); // Set to 6 AM
-
-            const isBeforeWakeUp = now < wakeUpTime;
-            const sleeps = Math.ceil((christmasDate - now) / (1000 * 60 * 60 * 24)) - (isBeforeWakeUp ? 0 : 1);
-
-            document.getElementById('sleepsCounter').innerText = sleeps + ' sleeps until Christmas!';
+        // Check if we need to move to next year's Christmas
+        if (today > christmasDay) {
+          christmasDay.setFullYear(christmasDay.getFullYear() + 1);
         }
 
-        calculateSleepsUntilChristmas();
+        const timeDiff = christmasDay - today;
+        const sleeps = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+
+        document.getElementById("sleepsCounter").innerText =
+          sleeps + " sleeps until Christmas!";
+      }
+
+      calculateSleepsUntilChristmas();
     </script>
-</body>
+  </body>
 </html>
