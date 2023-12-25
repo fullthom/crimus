@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleeps Until Christmas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .counter {
+            background-color: #e0e0e0;
+            display: inline-block;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        .counter h1 {
+            color: #333;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="counter">
+        <h1 id="sleepsCounter">Loading...</h1>
+    </div>
+
+    <script>
+        function calculateSleepsUntilChristmas() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            let christmasDate = new Date(currentYear, 11, 25); // December 25
+
+            // Adjust for the current timezone
+            const timezoneOffset = now.getTimezoneOffset() * 60000; // offset in milliseconds
+            now.setTime(now.getTime() - timezoneOffset);
+            christmasDate.setTime(christmasDate.getTime() - timezoneOffset);
+
+            // Check if we need to move to next year's Christmas
+            if (now.getMonth() === 11 && now.getDate() > 25) {
+                christmasDate.setFullYear(christmasDate.getFullYear() + 1);
+            }
+
+            const wakeUpTime = new Date(now);
+            wakeUpTime.setHours(6, 0, 0, 0); // Set to 6 AM
+
+            const isBeforeWakeUp = now < wakeUpTime;
+            const sleeps = Math.ceil((christmasDate - now) / (1000 * 60 * 60 * 24)) - (isBeforeWakeUp ? 0 : 1);
+
+            document.getElementById('sleepsCounter').innerText = sleeps + ' sleeps until Christmas!';
+        }
+
+        calculateSleepsUntilChristmas();
+    </script>
+</body>
+</html>
