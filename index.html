@@ -45,37 +45,43 @@
     </div>
 
     <script>
-      function calculateSleepsUntilChristmas() {
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        // Create Christmas date in UTC
-        const christmasDate = new Date(Date.UTC(currentYear, 11, 25)); // December 25
-
-        // Strip the time part for comparison
-        const today = new Date(
-          now.getFullYear(),
-          now.getMonth(),
-          now.getDate()
-        );
-        const christmasDay = new Date(
-          christmasDate.getUTCFullYear(),
-          christmasDate.getUTCMonth(),
-          christmasDate.getUTCDate()
-        );
-
-        // Check if we need to move to next year's Christmas
-        if (today > christmasDay) {
-          christmasDay.setFullYear(christmasDay.getFullYear() + 1);
+        function calculateSleepsUntilChristmas() {
+          const now = new Date();
+          const currentYear = now.getFullYear();
+          const christmasDate = new Date(Date.UTC(currentYear, 11, 25)); // December 25
+    
+          const today = new Date(
+            now.getFullYear(),
+            now.getMonth(),
+            now.getDate()
+          );
+          let christmasDay = new Date(
+            christmasDate.getUTCFullYear(),
+            christmasDate.getUTCMonth(),
+            christmasDate.getUTCDate()
+          );
+    
+          if (today > christmasDay) {
+            christmasDay.setFullYear(christmasDay.getFullYear() + 1);
+          }
+    
+          const timeDiff = christmasDay - today;
+          const sleeps = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
+    
+          let message = sleeps + " sleeps until Christmas!";
+          if (false && today.getDate() === 25 && today.getMonth() === 11) {
+            // It's Christmas Day
+            message += "\n🎄 Merry Christmas! 🎄\n🎅🎄🎁🦌🦌🎁🎄🎅";
+          } else {
+            for (let i = 0; i < sleeps; i++) {
+                message += "😴"
+            }
+          }
+    
+          document.getElementById("sleepsCounter").innerText = message;
         }
-
-        const timeDiff = christmasDay - today;
-        const sleeps = Math.ceil(timeDiff / (1000 * 60 * 60 * 24));
-
-        document.getElementById("sleepsCounter").innerText =
-          sleeps + " sleeps until Christmas!";
-      }
-
-      calculateSleepsUntilChristmas();
-    </script>
+    
+        calculateSleepsUntilChristmas();
+      </script>
   </body>
 </html>
